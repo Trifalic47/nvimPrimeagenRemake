@@ -1,18 +1,62 @@
-### ThePrimeagen's init.lua
-Prerequisite: install [ripgrep](https://github.com/BurntSushi/ripgrep).
+# ⚡ Trifalic47's Neovim Config (Primeagen Remake)
 
-[The full video of me setting up this repo](https://www.youtube.com/watch?v=w7i4amO_zaE)
+**Trifalic47 remake this ThePrimeagen config which is error free.**
 
-For anyone that is interested in my vimrc, i will have a commit log below
-documenting each one of my commits (easy to C-f the change you want to know
-about though i would just suggest `git log -S`).
+This is a refined, ultra-fast, and stable Neovim configuration based on [ThePrimeagen's dotfiles](https://github.com/ThePrimeagen/init.lua). It has been debugged and optimized to ensure all plugins load correctly without permission or path errors.
 
-### Change Log
-* [33eee9ad](https://github.com/ThePrimeagen/init.lua/commit/33eee9ad0c035a92137d99dae06a2396be4c892e) initial commits
-* [cb210006](https://github.com/ThePrimeagen/init.lua/commit/cb210006356b4b613b71c345cb2b02eefa961fc0) netrw, autogroups for yank highlighting, and auto remove whitespace
-* [c8c0bf4a](https://github.com/ThePrimeagen/init.lua/commit/c8c0bf4aeacd0bd77136d9c5ee490680515a106b) zenmode.  i really like this plugin
-* [81c770d2](https://github.com/ThePrimeagen/init.lua/commit/81c770d2d2e32e59916b39c7f5babbc8560f7a82) copilot testing
-* [4a96e645](https://github.com/ThePrimeagen/init.lua/commit/4a96e6457b0a0241ca7361ce62177aa6b9a33a38) fugitive mappings for push and pull
-* [a3bad06a](https://github.com/ThePrimeagen/init.lua/commit/a3bad06a4681c322538d609aa1c0bd18880f77c6) disabled eslint.  driving me crazy
+---
 
+## 🚀 Features
+- **Zero Errors**: Fixed all local path issues, permissions, and Luarocks build errors.
+- **Ultra-Fast Performance**: Minimalist approach using [Lazy.nvim](https://github.com/folke/lazy.nvim).
+- **Modern LSP**: Pre-configured Language Server Protocol support with auto-completion.
+- **Harpoon 2**: The latest version of Harpoon for lightning-fast file switching.
+- **Optimized UI**: Includes Rose Pine, Tokyonight, and support for transparent backgrounds.
 
+---
+
+## 🛠️ Installation & Setup
+
+### 1. Prerequisite
+Ensure you have `ripgrep` installed:
+```bash
+# Arch Linux
+sudo pacman -S ripgrep
+```
+
+### 2. Fix Permissions
+If you encounter permission denied errors, ensure your config is owned by your user:
+```bash
+sudo chown -R $USER:$USER ~/.config/nvim
+```
+
+### 3. Apply Config
+If you are using the `antigravity` fix files:
+```bash
+cp -r /home/tanishq/.gemini/antigravity/scratch/nvim_fix/* ~/.config/nvim/
+```
+
+---
+
+## ⌨️ Essential Keybinds
+
+### Navigation
+- `<leader>pv`: Open File Explorer (Netrw)
+- `<C-d>` / `<C-u>`: Scroll Down/Up (Centered)
+- `n` / `N`: Next/Prev Search Result (Centered)
+
+### The "Super-Powers"
+- `<leader>p`: Paste over selection without losing your yanked text.
+- `<leader>y`: Yank directly to system clipboard.
+- `<leader>s`: Global search and replace for the word under cursor.
+
+### Harpoon 2
+- `<leader>a`: Add file to marks.
+- `<C-e>`: Toggle Harpoon menu.
+- `<Alt+1..4>`: Instantly jump to marks.
+
+---
+
+## 💎 Credits
+- **Original Base**: [ThePrimeagen](https://github.com/ThePrimeagen)
+- **Error-Free Remake**: **Trifalic47**
