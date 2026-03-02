@@ -40,9 +40,9 @@ return {
             dap.set_log_level("DEBUG")
 
             local function compile_c()
-                local file = vim.fn.expand("%")
-                local out = vim.fn.expand("%:r")
-                local cmd = string.format("gcc -g %s -o %s", file, out)
+                local file = vim.fn.expand("%:p")
+                local out = vim.fn.expand("%:p:r")
+                local cmd = string.format("gcc -g %s -o %s", vim.fn.shellescape(file), vim.fn.shellescape(out))
                 print("Compiling: " .. cmd)
                 local result = vim.fn.system(cmd)
                 if vim.v.shell_error ~= 0 then
@@ -88,58 +88,31 @@ return {
         config = function()
             local dap = require("dap")
             local dapui = require("dapui")
-            local function layout(name)
-                return {
-                    elements = {
-                        { id = name },
+            dapui.setup({
+                layouts = {
+                    {
+                        elements = {
+                            { id = "scopes", size = 0.25 },
+                            { id = "breakpoints", size = 0.25 },
+                            { id = "stacks", size = 0.25 },
+                            { id = "watches", size = 0.25 },
+                        },
+                        position = "left",
+                        size = 40,
                     },
-                    enter = true,
-                    size = 40,
-                    position = "right",
-                }
-            end
-            local name_to_layout = {
-                repl = { layout = layout("repl"), index = 0 },
-                stacks = { layout = layout("stacks"), index = 0 },
-                scopes = { layout = layout("scopes"), index = 0 },
-                console = { layout = layout("console"), index = 0 },
-                watches = { layout = layout("watches"), index = 0 },
-                breakpoints = { layout = layout("breakpoints"), index = 0 },
-            }
-            local layouts = {}
+                    {
+                        elements = {
+                            { id = "console", size = 0.5 },
+                            { id = "repl", size = 0.5 },
+                        },
+                        position = "bottom",
+                        size = 10,
+                    },
+                },
+            })
 
-            for name, config in pairs(name_to_layout) do
-                table.insert(layouts, config.layout)
-                name_to_layout[name].index = #layouts
-            end
-
-            local function toggle_debug_ui(name)
-                dapui.close()
-                local layout_config = name_to_layout[name]
-
-                if layout_config == nil then
-                    error(string.format("bad name: %s", name))
-                end
-
-                local uis = vim.api.nvim_list_uis()[1]
-                if uis ~= nil then
-                    layout_config.size = uis.width
-                end
-
-                pcall(dapui.toggle, layout_config.index)
-            end
-
-            vim.keymap.set("n", "<leader>dr", function() toggle_debug_ui("repl") end, { desc = "Debug: toggle repl ui" })
-            vim.keymap.set("n", "<leader>ds", function() toggle_debug_ui("stacks") end,
-                { desc = "Debug: toggle stacks ui" })
-            vim.keymap.set("n", "<leader>dw", function() toggle_debug_ui("watches") end,
-                { desc = "Debug: toggle watches ui" })
-            vim.keymap.set("n", "<leader>db", function() toggle_debug_ui("breakpoints") end,
-                { desc = "Debug: toggle breakpoints ui" })
-            vim.keymap.set("n", "<leader>dS", function() toggle_debug_ui("scopes") end,
-                { desc = "Debug: toggle scopes ui" })
-            vim.keymap.set("n", "<leader>dc", function() toggle_debug_ui("console") end,
-                { desc = "Debug: toggle console ui" })
+            vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "Debug: Toggle UI" })
+            vim.keymap.set("n", "<leader>de", dapui.eval, { desc = "Debug: Eval" })
 
             vim.api.nvim_create_autocmd("BufEnter", {
                 group = "DapGroup",
@@ -152,11 +125,10 @@ return {
             vim.api.nvim_create_autocmd("BufWinEnter", create_nav_options("dap-repl"))
             vim.api.nvim_create_autocmd("BufWinEnter", create_nav_options("DAP Watches"))
 
-            dapui.setup({
-                layouts = layouts,
-                enter = true,
-            })
 
+            dap.listeners.after.event_initialized.dapui_config = function()
+                dapui.open()
+            end
             dap.listeners.before.event_terminated.dapui_config = function()
                 dapui.close()
             end
@@ -180,11 +152,12 @@ return {
             "neovim/nvim-lspconfig",
         },
         config = function()
+            local dap = require("dap")
             require("mason-nvim-dap").setup({
                 ensure_installed = {
                     "delve",
                     "python",
-                    "cppdbg",
+                    "cpptools",
                 },
                 automatic_installation = true,
                 handlers = {
@@ -203,24 +176,32 @@ return {
                         require("mason-nvim-dap").default_setup(config)
                     end,
                     cppdbg = function(config)
-                        table.insert(config.configurations, 1, {
-                            name = "Launch Current File (GDB)",
-                            type = "cppdbg",
-                            request = "launch",
-                            program = function()
-                                return vim.fn.expand("%:p:r")
-                            end,
-                            cwd = "${workspaceFolder}",
-                            stopAtEntry = true,
-                            setupCommands = {
-                                {
-                                    text = "-enable-pretty-printing",
-                                    description = "enable pretty printing",
-                                    ignoreFailures = false,
+                        local configurations = {
+                            {
+                                name = "Launch Current File (GDB)",
+                                type = "cppdbg",
+                                request = "launch",
+                                program = function()
+                                    return vim.fn.expand("%:p:r")
+                                end,
+                                cwd = "${workspaceFolder}",
+                                stopAtEntry = true,
+                                MIMode = "gdb",
+                                miDebuggerPath = "/usr/bin/gdb",
+                                setupCommands = {
+                                    {
+                                        text = "-enable-pretty-printing",
+                                        description = "enable pretty printing",
+                                        ignoreFailures = false,
+                                    },
                                 },
                             },
-                        })
+                        }
+                        config.configurations = configurations
                         require("mason-nvim-dap").default_setup(config)
+                        -- Also set it manually to be sure
+                        dap.configurations.c = configurations
+                        dap.configurations.cpp = configurations
                     end,
                 },
             })
@@ -230,7 +211,7 @@ return {
         "mfussenegger/nvim-dap-python",
         dependencies = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" },
         config = function()
-            local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+            local path = vim.fn.expand("~/.local/share/nvim/mason/packages/debugpy/venv/bin/python")
             require("dap-python").setup(path)
         end,
     },
