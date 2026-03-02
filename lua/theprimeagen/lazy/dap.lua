@@ -39,6 +39,20 @@ return {
             local dap = require("dap")
             dap.set_log_level("DEBUG")
 
+            local function compile_c()
+                local file = vim.fn.expand("%")
+                local out = vim.fn.expand("%:r")
+                local cmd = string.format("gcc -g %s -o %s", file, out)
+                print("Compiling: " .. cmd)
+                local result = vim.fn.system(cmd)
+                if vim.v.shell_error ~= 0 then
+                    print("Compilation failed: " .. result)
+                    return nil
+                end
+                return out
+            end
+
+            vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
             vim.keymap.set("n", "<F8>", dap.continue, { desc = "Debug: Continue" })
             vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Debug: Step Over" })
             vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Debug: Step Into" })
@@ -47,6 +61,23 @@ return {
             vim.keymap.set("n", "<leader>B", function()
                 dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
             end, { desc = "Debug: Set Conditional Breakpoint" })
+            vim.keymap.set("n", "<leader>dt", dap.terminate, { desc = "Debug: Terminate" })
+            vim.keymap.set("n", "<leader>dC", dap.clear_breakpoints, { desc = "Debug: Clear All Breakpoints" })
+
+            -- C specific "Quick Run"
+            vim.keymap.set("n", "<leader>dcR", function()
+                local exe = compile_c()
+                if exe then
+                    dap.run({
+                        type = "cppdbg",
+                        request = "launch",
+                        name = "C Quick Debug",
+                        program = exe,
+                        cwd = "${workspaceFolder}",
+                        stopAtEntry = false,
+                    })
+                end
+            end, { desc = "Debug: Compile and Run C" })
         end
     },
 
@@ -152,6 +183,8 @@ return {
             require("mason-nvim-dap").setup({
                 ensure_installed = {
                     "delve",
+                    "python",
+                    "cppdbg",
                 },
                 automatic_installation = true,
                 handlers = {
@@ -167,18 +200,38 @@ return {
                             program = "${file}",
                             outputMode = "remote",
                         })
+                        require("mason-nvim-dap").default_setup(config)
+                    end,
+                    cppdbg = function(config)
                         table.insert(config.configurations, 1, {
-                            args = function() return vim.split(vim.fn.input("args> "), " ") end,
-                            type = "delve",
-                            name = "file args",
+                            name = "Launch Current File (GDB)",
+                            type = "cppdbg",
                             request = "launch",
-                            program = "${file}",
-                            outputMode = "remote",
+                            program = function()
+                                return vim.fn.expand("%:p:r")
+                            end,
+                            cwd = "${workspaceFolder}",
+                            stopAtEntry = true,
+                            setupCommands = {
+                                {
+                                    text = "-enable-pretty-printing",
+                                    description = "enable pretty printing",
+                                    ignoreFailures = false,
+                                },
+                            },
                         })
                         require("mason-nvim-dap").default_setup(config)
                     end,
                 },
             })
+        end,
+    },
+    {
+        "mfussenegger/nvim-dap-python",
+        dependencies = { "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" },
+        config = function()
+            local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+            require("dap-python").setup(path)
         end,
     },
 }

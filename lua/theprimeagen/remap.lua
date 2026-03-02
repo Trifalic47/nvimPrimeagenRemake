@@ -3,6 +3,8 @@ vim.keymap.set("n", "<leader>pv", function() vim.cmd.Ex() end)
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "<Tab>", ">gv")
+vim.keymap.set("v", "<S-Tab>", "<gv")
 
 vim.api.nvim_set_keymap("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = false, silent = false })
 
@@ -24,12 +26,8 @@ vim.keymap.set("n", "<leader>lt", function()
     vim.cmd [[ PlenaryBustedFile % ]]
 end)
 
--- greatest remap ever
-vim.keymap.set("x", "<leader>p", [["_dP]])
-
--- next greatest remap ever : asbjornHaland
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
+-- Paste over without yanking
+vim.keymap.set("v", "p", [["_dP]])
 
 vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
 
@@ -47,6 +45,8 @@ vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>r", [[:s/\<<C-r><C-w>\>/]], { desc = "Replace word instance" })
+vim.keymap.set("n", "<leader>rw", "ciw", { desc = "Change current word" })
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 vim.keymap.set(
