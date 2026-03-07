@@ -8,6 +8,9 @@ vim.keymap.set("v", "<M-k>", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "<Tab>", ">gv")
 vim.keymap.set("v", "<S-Tab>", "<gv")
 
+vim.keymap.set("v", "\\", "gc", { remap = true, desc = "Comment selected text" })
+vim.keymap.set("n", "\\", "gcc", { remap = true, desc = "Comment current line" })
+
 vim.api.nvim_set_keymap("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = false, silent = false })
 
 vim.keymap.set("n", "J", "mzJ`z")
