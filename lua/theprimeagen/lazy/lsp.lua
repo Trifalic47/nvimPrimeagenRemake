@@ -102,6 +102,34 @@ return {
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
+        local kind_icons = {
+            Text = "",
+            Method = "m",
+            Function = "f",
+            Constructor = "",
+            Field = "",
+            Variable = "v",
+            Class = "󱡠",
+            Interface = "",
+            Module = "",
+            Property = "",
+            Unit = "",
+            Value = "󰎟",
+            Enum = "",
+            Keyword = "󰌋",
+            Snippet = "",
+            Color = "󰏘",
+            File = "󰈙",
+            Reference = "",
+            Folder = "󰉋",
+            EnumMember = "",
+            Constant = "󰏿",
+            Struct = "",
+            Event = "",
+            Operator = "󰆕",
+            TypeParameter = "󰅲",
+        }
+
         cmp.setup({
             snippet = {
                 expand = function(args)
@@ -114,6 +142,19 @@ return {
                 ['<C-y>'] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete(),
             }),
+            formatting = {
+                fields = { "kind", "abbr", "menu" },
+                format = function(entry, vim_item)
+                    vim_item.kind = string.format("%s •", kind_icons[vim_item.kind] or vim_item.kind)
+                    vim_item.menu = ({
+                        nvim_lsp = "[LSP]",
+                        luasnip = "[Snippet]",
+                        buffer = "[Buffer]",
+                        path = "[Path]",
+                    })[entry.source.name]
+                    return vim_item
+                end,
+            },
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' }, -- For luasnip users.
