@@ -71,7 +71,7 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
 
         if vim.lsp.inlay_hint then
-            vim.lsp.inlay_hint.enable(true, { bufnr = e.buf })
+            vim.lsp.inlay_hint.enable(false, { bufnr = e.buf })
         end
     end
 })
