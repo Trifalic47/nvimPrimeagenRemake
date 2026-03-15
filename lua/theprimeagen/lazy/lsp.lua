@@ -31,17 +31,29 @@ return {
         require("mason").setup()
         require("mason-lspconfig").setup({
             ensure_installed = {
-                "lua_ls",
-                "rust_analyzer",
-                "gopls",
-                "vtsls",
                 "tailwindcss",
+                "clangd",
+                "pyright",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup {
-                        capabilities = capabilities
+                    local opts = {
+                        capabilities = capabilities,
                     }
+
+                    if server_name == "clangd" then
+                        opts.cmd = {
+                            "clangd",
+                            "--background-index",
+                            "--clang-tidy",
+                            "--header-insertion=iwyu",
+                            "--completion-style=detailed",
+                            "--function-arg-placeholders",
+                            "--fallback-style=llvm",
+                        }
+                    end
+
+                    require("lspconfig")[server_name].setup(opts)
                 end,
 
                 zls = function()
@@ -52,7 +64,7 @@ return {
                             zls = {
                                 enable_inlay_hints = true,
                                 enable_snippets = true,
-                                warn_style = true,
+                                 warn_style = true,
                             },
                         },
                     })
@@ -136,11 +148,18 @@ return {
                     require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
                 end,
             },
+            preselect = cmp.PreselectMode.None,
+            window = {
+                completion = cmp.config.window.bordered(),
+                documentation = cmp.config.window.bordered(),
+            },
             mapping = cmp.mapping.preset.insert({
                 ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
                 ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
                 ['<C-y>'] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete(),
+                ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+                ['<C-d>'] = cmp.mapping.scroll_docs(4),
             }),
             formatting = {
                 fields = { "kind", "abbr", "menu" },

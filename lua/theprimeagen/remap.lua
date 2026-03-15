@@ -41,7 +41,7 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<M-h>", "<cmd>silent !tmux-sessionizer -s 0 --vsplit<CR>")
+-- vim.keymap.set("n", "<M-h>", "<cmd>silent !tmux-sessionizer -s 0 --vsplit<CR>")
 vim.keymap.set("n", "<M-H>", "<cmd>silent !tmux neww tmux-sessionizer -s 0<CR>")
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
@@ -81,6 +81,13 @@ vim.keymap.set(
 vim.keymap.set("n", "<leader>ca", function()
     require("cellular-automaton").start_animation("make_it_rain")
 end)
+
+vim.keymap.set("n", "<M-CR>", function()
+    require("theprimeagen.open_file").smart_open()
+end, { desc = "Smart open link/include/import" })
+
+vim.keymap.set("n", "<M-h>", "<C-o>", { desc = "Jump back (previous location)" })
+vim.keymap.set("n", "<M-l>", "<C-i>", { desc = "Jump forward" })
 
 vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")

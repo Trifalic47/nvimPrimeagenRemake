@@ -69,6 +69,10 @@ autocmd('LspAttach', {
         vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
         vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
         vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+
+        if vim.lsp.inlay_hint then
+            vim.lsp.inlay_hint.enable(true, { bufnr = e.buf })
+        end
     end
 })
 
