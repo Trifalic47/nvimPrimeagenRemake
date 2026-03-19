@@ -1,5 +1,6 @@
 return {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "stevearc/conform.nvim",
         "williamboman/mason.nvim",
@@ -35,6 +36,7 @@ return {
                 "tailwindcss",
                 "clangd",
                 "pyright",
+                "lua_ls",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -87,16 +89,17 @@ return {
                                     globals = { 'vim' },
                                 },
                                 workspace = {
-                                    library = vim.api.nvim_get_runtime_file("", true),
+                                    library = {
+                                        [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                                        [vim.fn.stdpath("config") .. "/lua"] = true,
+                                    },
                                     checkThirdParty = false,
                                 },
                                 format = {
                                     enable = true,
-                                    -- Put format options here
-                                    -- NOTE: the value should be STRING!!
                                     defaultConfig = {
                                         indent_style = "space",
-                                        indent_size = "2",
+                                        indent_size = "4",
                                     }
                                 },
                             }

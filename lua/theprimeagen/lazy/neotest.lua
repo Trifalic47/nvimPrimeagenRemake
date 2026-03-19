@@ -1,5 +1,13 @@
 return {
     "nvim-neotest/neotest",
+    keys = {
+        { "<leader>tr", desc = "Debug: Running Nearest Test" },
+        { "<leader>tv", desc = "Debug: Summary Toggle" },
+        { "<leader>ts", desc = "Debug: Running Test Suite" },
+        { "<leader>td", desc = "Debug: Debug Nearest Test" },
+        { "<leader>to", desc = "Debug: Open test output" },
+        { "<leader>ta", desc = "Debug: Open test output" },
+    },
     dependencies = {
         "nvim-neotest/nvim-nio",
         "nvim-lua/plenary.nvim",

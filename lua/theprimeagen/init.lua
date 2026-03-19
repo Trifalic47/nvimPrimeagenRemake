@@ -39,7 +39,15 @@ autocmd('TextYankPost', {
 autocmd({"BufWritePre"}, {
     group = ThePrimeagenGroup,
     pattern = "*",
-    command = [[%s/\s\+$//e]],
+    callback = function()
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(0))
+        if ok and stats and stats.size < max_filesize then
+            local view = vim.fn.winsaveview()
+            vim.api.nvim_command([[silent! %s/\s\+$//e]])
+            vim.fn.winrestview(view)
+        end
+    end,
 })
 
 -- Commented out to prevent overriding your colorscheme choice on every buffer enter
