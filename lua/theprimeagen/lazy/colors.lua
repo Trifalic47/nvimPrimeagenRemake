@@ -1,5 +1,5 @@
 function ColorMyPencils(color)
-	color = color or "rose-pine"
+	color = color or "everforest"
 	vim.cmd.colorscheme(color)
 
 	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
@@ -73,6 +73,18 @@ return {
             })
 
             ColorMyPencils();
+        end
+    },
+
+    {
+        "sainnhe/everforest",
+        name = "everforest",
+        lazy = false,
+        priority = 1000,
+        config = function()
+            vim.g.everforest_background = 'hard'
+            vim.g.everforest_better_performance = 1
+            ColorMyPencils("everforest")
         end
     },
 }
