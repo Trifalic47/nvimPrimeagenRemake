@@ -79,3 +79,15 @@ autocmd('LspAttach', {
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
+ 
+ -- Man Page Configuration
+ vim.api.nvim_create_autocmd("FileType", {
+     pattern = "man",
+     callback = function()
+         vim.keymap.set("n", "q", "<CMD>q<CR>", { buffer = true, silent = true })
+         -- Use standard layout
+     end,
+ })
+ 
+ -- Set keywordprg to use :Man
+ vim.opt.keywordprg = ":Man"

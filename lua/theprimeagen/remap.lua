@@ -92,3 +92,26 @@ vim.keymap.set("n", "<M-l>", "<C-i>", { desc = "Jump forward" })
 vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
+
+-- Window Management
+vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split vertical" })
+vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split horizontal" })
+vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal" })
+vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
+
+vim.keymap.set("n", "<leader>wh", "<C-w>h", { desc = "Move to left split" })
+vim.keymap.set("n", "<leader>wj", "<C-w>j", { desc = "Move to bottom split" })
+vim.keymap.set("n", "<leader>wk", "<C-w>k", { desc = "Move to top split" })
+vim.keymap.set("n", "<leader>wl", "<C-w>l", { desc = "Move to right split" })
+
+-- Resize with arrows
+vim.keymap.set("n", "<C-Up>", ":resize +2<CR>")
+vim.keymap.set("n", "<C-Down>", ":resize -2<CR>")
+vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>")
+vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>")
+
+-- Move window in direction (Shift + Move keys)
+vim.keymap.set("n", "<C-w><S-h>", "<C-w>H")
+vim.keymap.set("n", "<C-w><S-j>", "<C-w>J")
+vim.keymap.set("n", "<C-w><S-k>", "<C-w>K")
+vim.keymap.set("n", "<C-w><S-l>", "<C-w>L")
