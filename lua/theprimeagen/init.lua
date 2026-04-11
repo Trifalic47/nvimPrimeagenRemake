@@ -2,13 +2,6 @@ require("theprimeagen.set")
 require("theprimeagen.remap")
 require("theprimeagen.lazy_init")
 
--- DO lock
--- DO NOT INCLUDE THIS
-
--- function restart_htmx_lsp()
---     require("lsp-debug-tools").restart({ expected = {}, name = "htmx-lsp", cmd = { "htmx-lsp", "--level", "DEBUG" }, root_dir = vim.loop.cwd(), });
--- end
-
 local augroup = vim.api.nvim_create_augroup
 local ThePrimeagenGroup = augroup('ThePrimeagen', {})
 
@@ -50,19 +43,6 @@ autocmd({"BufWritePre"}, {
     end,
 })
 
--- Commented out to prevent overriding your colorscheme choice on every buffer enter
--- autocmd('BufEnter', {
---     group = ThePrimeagenGroup,
---     callback = function()
---         if vim.bo.filetype == "zig" then
---             pcall(vim.cmd.colorscheme, "tokyonight-night")
---         else
---             pcall(vim.cmd.colorscheme, "rose-pine-moon")
---         end
---     end
--- })
-
-
 autocmd('LspAttach', {
     group = ThePrimeagenGroup,
     callback = function(e)
@@ -87,7 +67,7 @@ autocmd('LspAttach', {
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
- 
+
  -- Man Page Configuration
  vim.api.nvim_create_autocmd("FileType", {
      pattern = "man",
@@ -96,6 +76,6 @@ vim.g.netrw_winsize = 25
          -- Use standard layout
      end,
  })
- 
+
  -- Set keywordprg to use :Man
  vim.opt.keywordprg = ":Man"
