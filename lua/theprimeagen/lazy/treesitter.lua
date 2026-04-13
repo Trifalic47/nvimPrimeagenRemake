@@ -5,13 +5,13 @@ return {
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
-		branch = "master",
 		config = function()
 			require("nvim-treesitter.configs").setup({
 				ensure_installed = {
 					"c",
                     "cpp",
 					"lua",
+                    "rust",
 				},
 
 				sync_install = false,
