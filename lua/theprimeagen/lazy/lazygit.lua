@@ -8,4 +8,5 @@ return {
         vim.keymap.set("n", "<leader>gf", "<cmd>LazyGitFilter<cr>",              { desc = "LazyGit File History" })
         vim.keymap.set("n", "<leader>gc", "<cmd>LazyGitFilterCurrentFile<cr>",   { desc = "LazyGit Current File" })
     end,
+
 }
