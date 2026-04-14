@@ -32,8 +32,17 @@ return {
                 lsp_doc_border = false,
             },
             notify = {
-                enabled = true,
+                enabled = false,
                 view = "notify",
+            },
+            routes = {
+                {
+                    filter = {
+                        event = "notify",
+                        find = "No information available", -- or generic startup msgs
+                    },
+                    opts = { skip = true },
+                },
             },
         })
     end
