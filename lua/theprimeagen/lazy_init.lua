@@ -1,14 +1,14 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
-  print("Installing lazy.nvim... (wait)")
-  vim.fn.system({
-    "git",
-    "clone",
-    "--depth=1",  -- faster, less hanging
-    "https://github.com/folke/lazy.nvim.git",
-    lazypath,
-  })
+    print("Installing lazy.nvim... (wait)")
+    vim.fn.system({
+        "git",
+        "clone",
+        "--depth=1",  -- faster, less hanging
+        "https://github.com/folke/lazy.nvim.git",
+        lazypath,
+    })
 end
 
 vim.opt.rtp:prepend(lazypath)
@@ -19,5 +19,9 @@ require("lazy").setup({
     rocks = {
         enabled = false,
         hererocks = false,
+    },
+    git = {
+        -- Force reset any local changes on update
+        force = true,
     },
 })

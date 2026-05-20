@@ -68,7 +68,7 @@ return {
                             zls = {
                                 enable_inlay_hints = false,
                                 enable_snippets = true,
-                                 warn_style = true,
+                                warn_style = true,
                             },
                         },
                     })
@@ -183,12 +183,31 @@ return {
                 { name = 'luasnip' }, -- For luasnip users.
                 { name = 'path' },
             }, {
-                { name = 'buffer' },
-            })
+                    { name = 'buffer' },
+                })
+        })
+        vim.filetype.add({
+            extension = {
+                asm = "asm",
+                s   = "asm",
+                S   = "asm",
+            }
         })
 
+        require("lspconfig").asm_lsp.setup({
+            capabilities = capabilities,
+            filetypes = { "asm", "s", "S" },
+        })
+        -- Add this before vim.diagnostic.config block
+        require("lspconfig").asm_lsp.setup({
+            capabilities = capabilities,
+            filetypes = { "asm", "s", "S" },
+        })
         vim.diagnostic.config({
             -- update_in_insert = true,
+            virtual_text = false,
+            signs = false,
+            underline = true,
             float = {
                 focusable = false,
                 style = "minimal",
@@ -198,5 +217,7 @@ return {
                 prefix = "",
             },
         })
+
+        -- })
     end
 }

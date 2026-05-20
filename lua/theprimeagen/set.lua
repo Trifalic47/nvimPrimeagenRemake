@@ -29,3 +29,20 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 250
 
 vim.opt.clipboard:append("unnamedplus")
+vim.cmd("syntax on")
+vim.opt.termguicolors = true
+vim.opt.background = "dark"
+vim.cmd("colorscheme nightfly")
+vim.opt.number = true
+vim.opt.relativenumber = false
+vim.opt.signcolumn = "no"
+vim.opt.laststatus = 2
+vim.opt.showmode = false
+vim.opt.cursorline = false
+vim.opt.cmdheight = 1
+vim.opt.fillchars = { eob = " " }
+vim.wo.relativenumber = true
+vim.opt.colorcolumn = "120"
+vim.api.nvim_set_hl(0, "ColorColumn", {
+    bg = "#111111"
+})

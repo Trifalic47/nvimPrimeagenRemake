@@ -12,6 +12,7 @@ return {
 					"c",
                     "cpp",
 					"lua",
+                    "markdown",
 				},
 
 				sync_install = false,
