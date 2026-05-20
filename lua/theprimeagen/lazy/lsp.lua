@@ -194,16 +194,25 @@ return {
             }
         })
 
-        require("lspconfig").asm_lsp.setup({
+        vim.lsp.config('asm_lsp', {
             capabilities = capabilities,
             filetypes = { "asm", "s", "S" },
         })
-        -- Add this before vim.diagnostic.config block
-        require("lspconfig").asm_lsp.setup({
-            capabilities = capabilities,
-            filetypes = { "asm", "s", "S" },
-        })
+        vim.lsp.enable('asm_lsp')
+
         vim.diagnostic.config({
+            virtual_text = false,
+            signs = false,
+            underline = true,
+            float = {
+                focusable = false,
+                style = "minimal",
+                border = "rounded",
+                source = "always",
+                header = "",
+                prefix = "",
+            },
+        }) vim.diagnostic.config({
             -- update_in_insert = true,
             virtual_text = false,
             signs = false,
