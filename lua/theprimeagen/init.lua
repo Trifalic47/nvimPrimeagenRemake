@@ -1,3 +1,8 @@
+if vim.treesitter
+    and vim.treesitter.language
+    and not vim.treesitter.language.ft_to_lang then
+    vim.treesitter.language.ft_to_lang = vim.treesitter.language.get_lang
+end
 require("theprimeagen.set")
 require("theprimeagen.remap")
 require("theprimeagen.lazy_init")

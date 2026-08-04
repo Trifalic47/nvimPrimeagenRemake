@@ -118,3 +118,24 @@ vim.keymap.set("n", "<C-w><S-h>", "<C-w>H")
 vim.keymap.set("n", "<C-w><S-j>", "<C-w>J")
 vim.keymap.set("n", "<C-w><S-k>", "<C-w>K")
 vim.keymap.set("n", "<C-w><S-l>", "<C-w>L")
+
+-- Horizontal terminal (bottom)
+vim.keymap.set("n", "<leader>h", function()
+    vim.cmd("botright split")
+    vim.cmd("terminal")
+    vim.cmd("resize 12")
+    vim.cmd("startinsert")
+end, { desc = "Horizontal Terminal" })
+
+-- Vertical terminal (right)
+vim.keymap.set("n", "<leader>v", function()
+    vim.cmd("botright vsplit")
+    vim.cmd("terminal")
+    vim.cmd("startinsert")
+end, { desc = "Vertical Terminal" })
+-- Exit terminal mode with Ctrl+x
+vim.keymap.set("t", "<C-x>", [[<C-\><C-n>]], {
+    noremap = true,
+    silent = true,
+    desc = "Exit terminal mode",
+})
