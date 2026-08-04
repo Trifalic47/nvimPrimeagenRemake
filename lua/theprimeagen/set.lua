@@ -32,7 +32,6 @@ vim.opt.clipboard:append("unnamedplus")
 vim.cmd("syntax on")
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
-vim.cmd("colorscheme nightfly")
 vim.opt.number = true
 vim.opt.relativenumber = false
 vim.opt.signcolumn = "no"
@@ -46,3 +45,6 @@ vim.opt.colorcolumn = "120"
 vim.api.nvim_set_hl(0, "ColorColumn", {
     bg = "#111111"
 })
+
+vim.opt.autoindent = true
+vim.opt.cindent = true

@@ -5,9 +5,8 @@ return {
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
-		branch = "master",
 		config = function()
-			require("nvim-treesitter.configs").setup({
+			require("nvim-treesitter.config").setup({
 				ensure_installed = {
 					"c",
                     "cpp",
@@ -46,16 +45,6 @@ return {
 				},
 			})
 
-			local treesitter_parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-			treesitter_parser_config.templ = {
-				install_info = {
-					url = "https://github.com/vrischmann/tree-sitter-templ.git",
-					files = { "src/parser.c", "src/scanner.c" },
-					branch = "master",
-				},
-			}
-
-			vim.treesitter.language.register("templ", "templ")
 		end,
 	},
 
