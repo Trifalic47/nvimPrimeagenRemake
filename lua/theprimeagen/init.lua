@@ -77,4 +77,19 @@ autocmd('LspAttach', {
  })
 
  -- Set keywordprg to use :Man
- vim.opt.keywordprg = ":Man"
+vim.opt.cursorline = true
+
+vim.api.nvim_set_hl(0, "CursorLine", {
+    bg = "NONE",
+})
+
+vim.api.nvim_set_hl(0, "LineNr", {
+    fg = "#565c64",
+    bg = "NONE",
+})
+
+vim.api.nvim_set_hl(0, "CursorLineNr", {
+    fg = "#ffdd33",
+    bg = "NONE",
+    bold = true,
+})vim.opt.keywordprg = ":Man"

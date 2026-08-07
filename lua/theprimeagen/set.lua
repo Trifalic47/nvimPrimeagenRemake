@@ -48,3 +48,4 @@ vim.api.nvim_set_hl(0, "ColorColumn", {
 
 vim.opt.autoindent = true
 vim.opt.cindent = true
+
